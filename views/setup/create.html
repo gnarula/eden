@@ -1,0 +1,28 @@
+{{extend "layout.html"}}
+<div class="row">
+    <div class="span12 alert" style="">
+        <legend>Instructions for generating private key</legend>
+        <ul>
+            <li><a href="http://placehold.it/640x480" data-lightbox="amazon" title="Step 1">Amazon EC2</a></li>
+            <li><a href="http://placehold.it/640x480" data-lightbox="linux" title="Step 1">Linux Server</a></li>
+        </ul>
+        <div style="display:none">
+            <a href="http://placehold.it/640x480" data-lightbox="amazon" title="Step 2">Step 2</a>
+        </div>
+
+    </div>
+</div>
+{{try:}}{{=H2(title)}}{{except:}}{{pass}}
+{{try:}}{{=s3db.ocr_buttons(r)}}{{except:}}{{pass}}
+<div id='rheader'>
+{{try:}}{{=XML(rheader)}}
+</div>
+<div id='component'>
+{{except:}}
+</div>
+{{pass}}
+<div>
+ <div class='form-container'>
+ {{try:}}{{=form}}{{except:}}{{pass}}
+ </div>
+</div>
