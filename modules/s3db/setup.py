@@ -43,24 +43,29 @@ class S3DeployModel(S3Model):
 
         tablename = "setup_deploy"
 
-
         table = self.define_table(tablename,
-                Field("name", label=T("Hostname"), requires=IS_NOT_EMPTY(), unique=True),
-                Field("web_server", label=T("Web Server"), required=True, requires=IS_IN_SET(["apache", "cherokee"])),
-                Field("database_type", label=T("Database"), required=True, requires=IS_IN_SET(["mysql", "postgresql"])),
+                Field("name",
+                      label=T("Hostname"),
+                      requires=IS_NOT_EMPTY(),
+                      unique=True),
+                Field("web_server",
+                      label=T("Web Server"),
+                      required=True,
+                      requires=IS_IN_SET(["apache", "cherokee"])),
+                Field("database_type",
+                      label=T("Database"),
+                      required=True,
+                      requires=IS_IN_SET(["mysql", "postgresql"])),
                 Field("pemkey", "upload", label=T("Key (.pem)")),
-                Field("status", "integer", requires=IS_IN_SET([0,1]), default=0), # 0 - queued 1 - deployed
-                Field("repo", label=T("Eden Repo git URL")), # TODO: Add more advanced options
+                Field("status",
+                      "integer",
+                      requires=IS_IN_SET([0,1]),
+                      default=0,
+                      represent=lambda status,row: 'Deployed' if status else 'Undeployed',
+                      writable=False), # 0 - queued 1 - deployed
+                Field("repo",
+                      label=T("Eden Repo git URL")), # TODO: Add more advanced options
                 *s3_meta_fields())
-
-        crud_form = S3SQLCustomForm("name",
-                                    "web_server",
-                                    "database_type",
-                                    "pemkey",
-                                    "repo"
-                                    )
-
-        self.configure(tablename, crud_form=crud_form)
 
         # CRUD Strings
         s3.crud_strings[tablename] = Storage(
@@ -76,6 +81,16 @@ class S3DeployModel(S3Model):
             msg_record_deleted = T("Deployment deleted"),
             msg_list_empty = T("No Deployment Saved yet")
         )
+
+        list_fields = [
+            "id",
+            "name",
+            "web_server",
+            "database_type",
+            "repo",
+        ]
+
+        self.configure(tablename, list_fields=list_fields)
 
         return dict()
 
