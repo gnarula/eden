@@ -26,7 +26,7 @@ def deploy():
 
     output =  s3_rest_controller()
 
-    s3.scripts.append(URL('static', 'themes/setup/lightbox/js/lightbox-2.6.min.js'))
+    s3.scripts.append(URL("static", "themes/setup/lightbox/js/lightbox-2.6.min.js"))
 
     # TODO: Add hook to call the backend code
 
