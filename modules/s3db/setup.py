@@ -65,6 +65,10 @@ class S3DeployModel(S3Model):
                   writable=False), # 0 - queued 1 - deployed
             Field("repo",
                   label=T("Eden Repo git URL")), # TODO: Add more advanced options
+            Field("coapps",
+                  label=T("Co-Apps"),
+                  requires=IS_EMPTY_OR(IS_IN_SET(["GeoServer", "WebSetup"], multiple=True)),
+                  widget=CheckboxesWidgetS3.widget),
             *s3_meta_fields())
 
         # CRUD Strings
@@ -74,7 +78,7 @@ class S3DeployModel(S3Model):
             title_update = T("Edit Deployment"),
             subtitle_create = T("Add Deployment"),
             label_create_button = T("Add Deployment"),
-            label_list_button = T("View Deployment"),
+            label_list_button = T("View Deployments"),
             label_delete_button = T("Delete Deployment"),
             msg_record_created = T("Deployment Created"),
             msg_record_modified = T("Deployment updated"),
@@ -88,9 +92,14 @@ class S3DeployModel(S3Model):
             "web_server",
             "database_type",
             "repo",
+            "coapps",
         ]
 
-        self.configure(tablename, list_fields=list_fields)
+        self.configure(tablename,
+            list_fields=list_fields,
+            editable=False,
+            deletable=False,
+        )
 
         return dict()
 
