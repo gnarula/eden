@@ -64,7 +64,11 @@ class S3DeployModel(S3Model):
                   represent=lambda status,row: 'Deployed' if status else 'Undeployed',
                   writable=False), # 0 - queued 1 - deployed
             Field("repo",
-                  label=T("Eden Repo git URL")), # TODO: Add more advanced options
+                  label=T("Eden Repo git URL"),
+                  default="https://github.com/flavour/eden"), # TODO: Add more advanced options
+            Field("template",
+                  label=T("Template"),
+                  default="default"),
             Field("coapps",
                   label=T("Co-Apps"),
                   requires=IS_EMPTY_OR(IS_IN_SET(["GeoServer", "WebSetup"], multiple=True)),
