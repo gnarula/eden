@@ -345,6 +345,52 @@ if settings.has_module("req"):
     tasks["req_add_from_template"] = req_add_from_template
 
 # -----------------------------------------------------------------------------
+if settings.has_module("setup"):
+
+    def execute_tasks(fab_tasks, configs, **vars):
+
+        from fabric.api import env, task
+
+        # ToDo: write the fabric code
+        @task
+        def setup_apache():
+            pass
+
+        @task
+        def setup_cherokee():
+            pass
+
+        @task
+        def setup_mysql():
+            pass
+
+        @task
+        def setup_postgresql():
+            pass
+
+        @task
+        def setup_eden(repo, template="default"):
+            pass
+
+        @task
+        def setup_geoserver():
+            pass
+
+        @task
+        def setup_websetup():
+            pass
+
+        # append key
+        if env.key_filename is None:
+            env.key_filename = []
+        env.key_filename.append(configs["key_path"])
+
+        for fab_task, kwargs in fab_tasks.iteritems():
+            execute(eval(fab_task), host=configs["hostname"], **kwargs)
+
+    tasks["execute_tasks"] = execute_tasks
+
+# -----------------------------------------------------------------------------
 if settings.has_module("stats"):
     def stats_demographic_update_aggregates(records=None, user_id=None):
         """
